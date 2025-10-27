@@ -1,0 +1,23 @@
+{
+  "name": "floqast-automation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:api": "npx playwright test tests/API Tests",
+    "test:ui": "npx playwright test tests/UI Tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.9.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+
+}
