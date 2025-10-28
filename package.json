@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "test:api": "npx playwright test tests/API Tests",
+    "test:api": "playwright test tests/API Tests",
     "test:ui": "npx playwright test tests/UI Tests"
   },
   "keywords": [],

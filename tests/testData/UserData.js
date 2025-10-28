@@ -5,11 +5,10 @@ export function createUser(overrides = {}) {
     const name = faker.person.fullName();
     const email = faker.internet.email({ name, provider: 'testinc.com' });
     const accountType = faker.helpers.arrayElement(['standard', 'premium', 'checking', 'savings']);
-
     return {
         name: name,
         email: email,
         accountType: accountType,
         ...overrides
     };
-}
+} 

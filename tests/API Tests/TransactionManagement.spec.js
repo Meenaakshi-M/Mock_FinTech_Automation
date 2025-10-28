@@ -75,7 +75,7 @@ test('Get User Transactions', async ({request}) => {
   expect(transactions).toHaveLengthGreaterThan(0);  
 });
 
-test.only('Get User Transactions - Bad Request', async ({request}) => {
+test('Get User Transactions - Bad Request', async ({request}) => {
   const response = await request.get(`${baseURL}/transactions/acb234/`, { data:
     { type: 'ab' }
   });

@@ -3,16 +3,11 @@ import { createUser } from '../testData/UserData';
 import { logresponse } from '../utils/helper';
 import { StatusCodeToBeOneOf } from '../utils/helper';
 
-
-// Generate unique test data using User Data Factory
-const newUser = createUser();
-
 const baseURL =  process.env.API_BASE_URL;
-
-var userid;
 
 
 test('Create User', async ({request}) => {
+  const newUser = createUser();
   const response = await request.post(`${baseURL}/users`, { data: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
   });
   await logresponse(response);
@@ -23,8 +18,6 @@ test('Create User', async ({request}) => {
   expect(user).toHaveProperty('name');
   expect(user).toHaveProperty('email');
   expect(user).toHaveProperty('accountType');
-
-  userid = user.id;
 });
 
 test('Create User - Failed', async ({request}) => {
@@ -39,8 +32,18 @@ test('Create User - Failed', async ({request}) => {
 // Get User Details Tests
 
 test('Get User Details', async ({request}) => {
-  const response = await request.get(`${baseURL}/users/:${userid}`
-   );
+  const newUser = createUser();
+  const postResponse = await request.post(`${baseURL}/users`, { data: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
+  });
+  await logresponse(postResponse);
+  expect(postResponse.status()).toBe(201);
+
+  const createdBody = await postResponse.json();
+  const userId = createdBody.id;
+
+  const response = await request.get(`${baseURL}/users/` + userId);
+  console.log('Getting User ID within Get Call: ' + userId);
+  await logresponse(response);
   expect(response.status()).toBe(200);
   
   const user = await response.json();
@@ -61,9 +64,18 @@ test('Get User - Bad Request', async ({request}) => {
 // Update User Tests
 
 test('Update User', async ({request}) => {
-  const response = await request.put(`${baseURL}/users/:${userid}`, { data:
+  const newUser = createUser();
+  const postResponse = await request.post(`${baseURL}/users`, { data: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
+  });
+  await logresponse(postResponse);
+  expect(postResponse.status()).toBe(201);
+
+  const createdBody = await postResponse.json();
+  const userId = createdBody.id;
+  const response = await request.put(`${baseURL}/users/` + userId, { data:
     { email: 'test@example.com', accountType: 'checking' }
   });
+  await logresponse(response);
   expect(response.status()).toBe(200);
 
   const user = await response.json();
@@ -73,7 +85,7 @@ test('Update User', async ({request}) => {
 });
 
 test('Update User - Failed', async ({request}) => {
-  const response = await request.put(`${baseURL}/users/:${userid}`, { data:
+  const response = await request.put(`${baseURL}/users/AA12`, { data:
    { type: 'savings' }
   });
   StatusCodeToBeOneOf(response, [400, 404]);
@@ -83,8 +95,17 @@ test('Update User - Failed', async ({request}) => {
 // Delete User Tests
 
 test('Delete User', async ({request}) => {
-    const response = await request.delete(`${baseURL}/users/:${userid}`);
-    expect(response.status()).toBe(204);
+  const newUser = createUser();
+  const postResponse = await request.post(`${baseURL}/users`, { data: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
+  });
+  await logresponse(postResponse);
+  expect(postResponse.status()).toBe(201);
+
+  const createdBody = await postResponse.json();
+  const userId = createdBody.id;
+  const response = await request.delete(`${baseURL}/users/` + userId);
+  await logresponse(response);
+  expect(response.status()).toBe(204);
 });
 
 test('Delete User - Failed', async ({request}) => {
