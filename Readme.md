@@ -6,7 +6,7 @@ I have used Javascript with Playwright as the test automation framework for both
     - tests/UI Tests - Contains UI test files.
     - tests/Environments - Contains environment specific configuration details like URL, API Key
     - tests/testData - Contains test data factory for user and transaction data
-    - utils
+    - utils - Contains helper functions for API Response logging and Custom assertions
 
 **Assumptions**
 1. For all error scenarios, the backend APIs return 400 status code
