@@ -12,6 +12,7 @@ I have used Javascript with Playwright as the test automation framework for both
 1. For all error scenarios, the backend APIs return 400 status code
 2. Based on the email discussion, I have assumed that there is no application specific authorization/authentication
 3. All API calls need API Keys
+4. For API failure scenarios, I'm assuming error messages can be sent either in JSON format or as a string in request body. So, I only log the response and not look for specific error messages other than status code
 
 
 **External Libraries used**
@@ -29,7 +30,7 @@ Use the following commands to run the tests:
     * Displays company name. It has a 'Register User' button and 'Create Transaction' button
     * It also has a Current Users and Recent Transactions section
     * Clicking on the 'Register User' button will take you to "http://localhost:8080/register-user.html"
-    * Clicking on the 'Financial Transaction' button will take you to "http://localhost:8080/create-transaction"
+    * Clicking on the 'Financial Transaction' button will take you to "http://localhost:8080/create-transaction.html"
 
 * User Registration Page
     * This page has a Register New User title followed by a form to enter 'name', 'email address' and 'Account Type'

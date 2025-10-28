@@ -7,7 +7,6 @@ const baseURL =  process.env.UI_BASE_URL;
 const newUser = createUser();
 
 // UI Tests for User Registration
-
 test.describe('User Registration Tests', () => {
   test('Successful User Registration', async ({ page }) => {
     // Navigate to home page and click on registration link

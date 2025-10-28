@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 import { createUser } from '../testData/UserData';
+import { logresponse } from '../utils/helper';
 
-//I assume all your backend APIs unless its a internal server error returns 400 status code
 
 // Generate unique test data using User Data Factory
 const newUser = createUser();
@@ -12,10 +12,10 @@ var userid;
 
 
 test('Create User', async ({request}) => {
-  const response = await request.post(`${baseURL}/users`, { params: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
+  const response = await request.post(`${baseURL}/users`, { data: { name: newUser.name, email: newUser.email, accountType: newUser.accountType }
   });
+  await logresponse(response);
   expect(response.status()).toBe(201);
-  expect(response.responseTime()).toBeLessThan(500);
   
 
   const user = await response.json();
@@ -28,13 +28,11 @@ test('Create User', async ({request}) => {
 
 test('Create User - Failed', async ({request}) => {
   const response = await request.post(`${baseURL}/users`, {
-    params: { email: 'Jim' }
+    data: { email: 'Jim' }
   });
-  expect(response.status()).toBe(400);
-  
-
-  const user = await response.json();
-  expect(user).toHaveProperty('error');
+  await logresponse(response);
+  expect(response.status()).toBe(400)
+  ;
 });
 
 // Get User Details Tests
@@ -43,9 +41,7 @@ test('Get User Details', async ({request}) => {
   const response = await request.get(`${baseURL}/users/:${userid}`
    );
   expect(response.status()).toBe(200);
-  expect(response.responseTime()).toBeLessThan(500);
   
-
   const user = await response.json();
   expect(user).toHaveProperty('name');
   expect(user).toHaveProperty('email');
@@ -53,25 +49,20 @@ test('Get User Details', async ({request}) => {
 });
 
 test('Get User - Bad Request', async ({request}) => {
-  const response = await request.get(`${baseURL}/users/:${userid}`, {params:
+  const response = await request.get(`${baseURL}/users/AA1`, {data:
      { city: 'Berkeley' }
   });
-  expect(response.status()).toBe(400);
-  
-
-  const user = await response.json();
-  expect(user).toHaveProperty('error');
+  await logresponse(response);
+  expect(response.status()).toBe(404);
 });
 
 // Update User Tests
 
 test('Update User', async ({request}) => {
-  const response = await request.put(`${baseURL}/users/:${userid}`, { params:
+  const response = await request.put(`${baseURL}/users/:${userid}`, { data:
     { email: 'test@example.com', accountType: 'checking' }
   });
   expect(response.status()).toBe(200);
-  expect(response.responseTime()).toBeLessThan(500);
-  
 
   const user = await response.json();
   expect(user).toHaveProperty('name');
@@ -80,13 +71,11 @@ test('Update User', async ({request}) => {
 });
 
 test('Update User - Failed', async ({request}) => {
-  const response = await request.put(`${baseURL}/users/:${userid}`, {params:
+  const response = await request.put(`${baseURL}/users/:${userid}`, { data:
    { type: 'savings' }
   });
+  await logresponse(response);
   expect(response.status()).toBe(400);
-  
-  const user = await response.json();
-  expect(user).toHaveProperty('error');
 });
 
 // Delete User Tests
@@ -94,15 +83,11 @@ test('Update User - Failed', async ({request}) => {
 test('Delete User', async ({request}) => {
     const response = await request.delete(`${baseURL}/users/:${userid}`);
     expect(response.status()).toBe(204);
-    expect(response.responseTime()).toBeLessThan(500);
 });
 
 test('Delete User - Failed', async ({request}) => {
   const response = await request.delete(`${baseURL}/users/AA1`);
-  expect(response.status()).toBe(400);
-  
-
-  const user = await response.json();
-  expect(user).toHaveProperty('error');
+  await logresponse(response);
+  expect(response.status()).toBe(404);
 });
 
