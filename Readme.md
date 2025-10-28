@@ -19,6 +19,10 @@ I have used Javascript with Playwright as the test automation framework for both
 * dotenv - Used for handling configuration for different environments
 * faker - Used to generate unique test data that can be used across UI and API tests
 
+**Helper Functions**
+* Function to log API Response object
+* Custom assertion function to check if returned status code is part of an array of status codes
+
 **How to Run**
 
 Use the following commands to run the tests:

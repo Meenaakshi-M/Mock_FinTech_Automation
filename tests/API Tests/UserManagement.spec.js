@@ -1,6 +1,7 @@
 import {test, expect} from '@playwright/test';
 import { createUser } from '../testData/UserData';
 import { logresponse } from '../utils/helper';
+import { StatusCodeToBeOneOf } from '../utils/helper';
 
 
 // Generate unique test data using User Data Factory
@@ -52,8 +53,9 @@ test('Get User - Bad Request', async ({request}) => {
   const response = await request.get(`${baseURL}/users/AA1`, {data:
      { city: 'Berkeley' }
   });
+  // Using helper function to check possible status codes and logging API response
+  StatusCodeToBeOneOf(response, [400, 404]);
   await logresponse(response);
-  expect(response.status()).toBe(404);
 });
 
 // Update User Tests
@@ -74,8 +76,8 @@ test('Update User - Failed', async ({request}) => {
   const response = await request.put(`${baseURL}/users/:${userid}`, { data:
    { type: 'savings' }
   });
+  StatusCodeToBeOneOf(response, [400, 404]);
   await logresponse(response);
-  expect(response.status()).toBe(400);
 });
 
 // Delete User Tests

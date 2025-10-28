@@ -5,3 +5,12 @@ export async function logresponse(response) {
     console.log(`Response Body: ${responseBody}`);
 }
 
+export function StatusCodeToBeOneOf(response, expectedStatusCodes) {
+    const receivedStatusCode = response.status();
+    if (!expectedStatusCodes.includes(receivedStatusCode)) {
+        throw new Error(`Expected status code to be one of ${expectedStatusCodes}, but received ${receivedStatusCode}`);
+    }
+}
+
+
+

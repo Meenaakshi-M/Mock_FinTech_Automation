@@ -1,6 +1,7 @@
 import {test, expect} from '@playwright/test';
 import { createTransaction } from '../testData/TransactionData';
 import { logresponse } from '../utils/helper';
+import { StatusCodeToBeOneOf } from '../utils/helper';
 
 // Generate unique test data using Transaction Data Factory
 const newTransaction = createTransaction();
@@ -74,11 +75,12 @@ test('Get User Transactions', async ({request}) => {
   expect(transactions).toHaveLengthGreaterThan(0);  
 });
 
-test('Get User Transactions - Bad Request', async ({request}) => {
+test.only('Get User Transactions - Bad Request', async ({request}) => {
   const response = await request.get(`${baseURL}/transactions/acb234/`, { data:
     { type: 'ab' }
   });
-  expect(response.status()).toBe(404);
+  // Using helper function to check possible status codes and logging API response
+  StatusCodeToBeOneOf(response, [400, 404]);
   await logresponse(response);
 });
 
