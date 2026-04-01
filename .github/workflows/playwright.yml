@@ -1,0 +1,62 @@
+name: Playwright Tests
+
+on:
+  # Run tests on PRs to verify code doesn't break before merge
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - package.json
+      - package-lock.json
+      - playwright.config.js
+      - '!.github/workflows/**'
+  # Run tests after merge and collect coverage as canonical source of truth
+  push:
+    branches: [main]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - package.json
+      - package-lock.json
+      - playwright.config.js
+  # Allow manual trigger for debugging
+  workflow_dispatch:
+
+# Cancel older runs when new commits are pushed to the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        run: npx playwright test
+        env:
+          CI: true
+          NODE_ENV: dev
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
