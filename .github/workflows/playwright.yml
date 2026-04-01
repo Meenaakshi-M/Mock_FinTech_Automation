@@ -48,19 +48,15 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run tests
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            npx playwright test
-          else
-            npx nyc --reporter=lcov --report-dir=coverage npx playwright test
-          fi
+        run: npx playwright test
         env:
           CI: true
           NODE_ENV: dev
 
-      - name: Upload coverage report
-        if: github.event_name != 'pull_request'
+      - name: Upload test report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: coverage/lcov.info
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
