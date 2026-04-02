@@ -14,10 +14,10 @@
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",
     "@playwright/test": "^1.56.1",
-    "@types/node": "^24.9.1"
+    "@types/node": "^24.9.1",
+    "jest": "^30.3.0"
   },
   "dependencies": {
     "dotenv": "^17.2.3"
   }
-
 }
