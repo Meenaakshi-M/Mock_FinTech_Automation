@@ -19,7 +19,11 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/tests/"
-    ]
+    ],
+    "coverageReporters": [
+      "lcov"
+    ],
+    "coverageDirectory": "coverage"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",

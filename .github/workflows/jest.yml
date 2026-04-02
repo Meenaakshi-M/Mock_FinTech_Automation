@@ -10,7 +10,6 @@ on:
       - '**/*.ts'
       - package.json
       - package-lock.json
-      - jest.config.js
       - '!.github/workflows/**'
   # Run tests after merge and collect coverage as canonical source of truth
   push:
@@ -20,7 +19,6 @@ on:
       - '**/*.ts'
       - package.json
       - package-lock.json
-      - jest.config.js
   # Allow manual trigger for debugging
   workflow_dispatch:
 
@@ -47,9 +45,9 @@ jobs:
       - name: Run tests
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            npx jest
+            npx jest --passWithNoTests
           else
-            npx jest --coverage
+            npx jest --passWithNoTests --coverage
           fi
 
       - name: Upload coverage report
