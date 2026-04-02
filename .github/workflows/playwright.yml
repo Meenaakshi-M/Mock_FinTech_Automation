@@ -47,12 +47,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Create case-sensitive symlink for environments directory
+        run: ln -s Environments tests/environments
+
       - name: Run tests
-        run: npx playwright test
+        run: xvfb-run npx playwright test
         env:
           CI: true
           NODE_ENV: dev
-          PLAYWRIGHT_HEADLESS: 'true'
 
       - name: Upload test report
         if: always()
