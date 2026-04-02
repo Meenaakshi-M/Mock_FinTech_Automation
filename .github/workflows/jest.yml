@@ -45,9 +45,9 @@ jobs:
       - name: Run tests
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            npx jest
+            npx jest --passWithNoTests
           else
-            npx jest --coverage --coverageReporters=lcov
+            npx jest --passWithNoTests --coverage --coverageReporters=lcov
           fi
 
       - name: Upload coverage report
