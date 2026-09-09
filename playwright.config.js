@@ -10,19 +10,19 @@ import dotenv from 'dotenv';
 
  switch(process.env.NODE_ENV) {
   case 'dev':
-    dotenv.config({ path: `./tests/environments/dev.env` });
+    dotenv.config({ path: `./tests/Environments/dev.env` });
     break;
   case 'qa':
-    dotenv.config({ path: `./tests/environments/qa.env` });
+    dotenv.config({ path: `./tests/Environments/qa.env` });
     break;
   case 'uat':
-    dotenv.config({ path: `./tests/environments/uat.env` });
+    dotenv.config({ path: `./tests/Environments/uat.env` });
     break;
   case 'prod':
-    dotenv.config({ path: `./tests/environments/prod.env` });
+    dotenv.config({ path: `./tests/Environments/prod.env` });
     break;
   default:
-    dotenv.config({ path: `./tests/environments/dev.env` });
+    dotenv.config({ path: `./tests/Environments/dev.env` });
   }
 
 
